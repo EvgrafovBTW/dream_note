@@ -16,6 +16,12 @@ class UserProfile extends StatelessWidget {
         children: [
           PlatformElevatedButton(
             onPressed: () {
+              appSettingsBloc.add(const ChangeMainAppColor(Colors.teal));
+            },
+            child: Text('defaut'),
+          ),
+          PlatformElevatedButton(
+            onPressed: () {
               appSettingsBloc.add(const ChangeMainAppColor(Colors.red));
             },
             child: Text('red'),
@@ -26,6 +32,17 @@ class UserProfile extends StatelessWidget {
             },
             child: Text('green'),
           ),
+          BlocBuilder<AppSettingsBloc, AppSettingsState>(
+            builder: (context, state) {
+              return PlatformSwitch(
+                value: state.isDarkMode,
+                onChanged: (v) {
+                  appSettingsBloc.add(ToggleDarkMode(v));
+                },
+              );
+            },
+          ),
+          Text('datadatadatadatadatadata'),
         ],
       ),
     );

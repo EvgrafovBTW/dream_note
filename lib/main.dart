@@ -6,13 +6,19 @@ import 'package:dream_note/logic/blocs/app_load/bloc/app_load_bloc.dart';
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/logic/blocs/bottom_navigation/bloc/bottom_navigation_bloc.dart';
 import 'package:dream_note/screens/profile_screen.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: await getTemporaryDirectory(),
+  );
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -46,13 +52,13 @@ class MainApp extends StatelessWidget {
     }
 
     Future<void> loadAppData() async {
-      print('loading app start');
+      // print('loading app start');
       appLoadBloc.add(AppLoadStart());
 
       await Future.delayed(Duration(seconds: 2));
 
       appLoadBloc.add(AppLoadComplete());
-      print('loading app complete');
+      // print('loading app complete');
     }
 
     return BlocBuilder<AppSettingsBloc, AppSettingsState>(
@@ -69,7 +75,9 @@ class MainApp extends StatelessWidget {
           material: (context, platform) => MaterialAppData(
             theme: ThemeData(
               colorScheme: ColorScheme(
-                brightness: Brightness.light,
+                brightness: settingsState.isDarkMode
+                    ? Brightness.dark
+                    : Brightness.light,
                 primary: settingsState.primaryColor,
                 onPrimary: settingsState.onPrimaryColor,
                 secondary: settingsState.primaryColor,

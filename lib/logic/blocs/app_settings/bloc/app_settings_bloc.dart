@@ -1,11 +1,13 @@
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'dart:convert';
+
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'app_settings_event.dart';
 part 'app_settings_state.dart';
 
-class AppSettingsBloc extends Bloc<AppSettingsEvent, AppSettingsState> {
+class AppSettingsBloc extends HydratedBloc<AppSettingsEvent, AppSettingsState> {
   AppSettingsBloc() : super(AppSettingsInitial()) {
     on<ChangeMainAppColor>(
       (event, emit) => emit(
@@ -14,5 +16,19 @@ class AppSettingsBloc extends Bloc<AppSettingsEvent, AppSettingsState> {
         ),
       ),
     );
+    on<ToggleDarkMode>(
+      (event, emit) => emit(
+        state.copyWith(
+          isDarkMode: event.darkModeValue,
+        ),
+      ),
+    );
   }
+
+  @override
+  AppSettingsState? fromJson(Map<String, dynamic> json) =>
+      AppSettingsState.fromMap(json);
+
+  @override
+  Map<String, dynamic>? toJson(AppSettingsState state) => state.toMap();
 }
