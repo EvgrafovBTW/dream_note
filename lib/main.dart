@@ -1,10 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'dart:math';
 
 import 'package:dream_note/logic/blocs/app_load/bloc/app_load_bloc.dart';
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/logic/blocs/bottom_navigation/bloc/bottom_navigation_bloc.dart';
+import 'package:dream_note/screens/main_screen.dart';
+import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/screens/profile_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,7 @@ void main() async {
           create: (context) => AppSettingsBloc(),
         ),
       ],
-      child: MainApp(),
+      child: const MainApp(),
     ),
   );
 }
@@ -55,7 +55,7 @@ class MainApp extends StatelessWidget {
       // print('loading app start');
       appLoadBloc.add(AppLoadStart());
 
-      await Future.delayed(Duration(seconds: 2));
+      await Future.delayed(const Duration(seconds: 2));
 
       appLoadBloc.add(AppLoadComplete());
       // print('loading app complete');
@@ -64,12 +64,13 @@ class MainApp extends StatelessWidget {
     return BlocBuilder<AppSettingsBloc, AppSettingsState>(
       builder: (context, settingsState) {
         List<Widget> pages = [
-          Placeholder(color: settingsState.primaryColor),
-          Placeholder(color: settingsState.primaryColor),
+          // Placeholder(color: settingsState.primaryColor),
+          const MainScreen(),
+          // Placeholder(color: settingsState.primaryColor),
+          const NewDreamScreen(),
           Placeholder(color: settingsState.primaryColor),
           // Placeholder(color: Colors.green),
-          // Placeholder(color: Colors.deepOrangeAccent),
-          UserProfile(),
+          const UserProfile(),
         ];
         return PlatformApp(
           material: (context, platform) => MaterialAppData(
@@ -83,7 +84,7 @@ class MainApp extends StatelessWidget {
                 secondary: settingsState.primaryColor,
                 onSecondary: settingsState.onPrimaryColor,
                 error: Colors.red,
-                onError: Colors.redAccent,
+                onError: Colors.white,
                 background: Colors.white,
                 onBackground: Colors.white,
                 surface: settingsState.primaryColor,
@@ -135,6 +136,10 @@ class MainApp extends StatelessWidget {
                           )
                         ]),
                         */
+                    floatingActionButton: FloatingActionButton(
+                      onPressed: () => appSettingsBloc.add(
+                          ToggleDarkMode(!appSettingsBloc.state.isDarkMode)),
+                    ),
                     // backgroundColor: Colors.indigoAccent,
                     body: SizedBox.expand(
                       child: IndexedStack(
@@ -148,7 +153,7 @@ class MainApp extends StatelessWidget {
                       showUnselectedLabels: false,
                       currentIndex: state.pageIndex,
                       onTap: onPageTapped,
-                      items: [
+                      items: const [
                         BottomNavigationBarItem(
                           icon: Icon(
                             Icons.home,
@@ -190,100 +195,5 @@ class MainApp extends StatelessWidget {
         );
       },
     );
-/*
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // primaryColor: Colors.red,
-        colorScheme: ColorScheme(
-          brightness: Brightness.dark,
-          primary: Colors.teal,
-          onPrimary: Colors.teal,
-          secondary: Colors.teal,
-          onSecondary: Colors.teal,
-          error: Colors.red,
-          onError: Colors.redAccent,
-          background: Colors.white,
-          onBackground: Colors.white,
-          surface: Colors.tealAccent,
-          onSurface: Colors.teal,
-        ),
-      ),
-      home: BlocBuilder<AppLoadBloc, AppLoadState>(
-        builder: (context, state) {
-          if (state is AppLoadInitial) {
-            loadAppData();
-          }
-          if (state is AppLoadInitial || state is AppLoading) {
-            List<Widget> loadingAnimations = [
-              SpinKitSpinningLines(color: Colors.teal),
-              SpinKitCubeGrid(color: Colors.teal),
-              SpinKitFoldingCube(color: Colors.teal),
-              SpinKitWave(color: Colors.teal),
-            ];
-            return Scaffold(
-              body: Center(
-                child: loadingAnimations[
-                    Random().nextInt(loadingAnimations.length - 1)],
-              ),
-            );
-          }
-          return BlocBuilder<BottomNavigationBloc, BottomNavigationState>(
-            builder: (context, state) {
-              return Scaffold(
-                // backgroundColor: Colors.indigoAccent,
-                body: SizedBox.expand(
-                  child: IndexedStack(
-                    index: state.pageIndex,
-                    children: pages,
-                  ),
-                ),
-                bottomNavigationBar: BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  // showSelectedLabels: false,
-                  showUnselectedLabels: false,
-                  currentIndex: state.pageIndex,
-                  onTap: onPageTapped,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.home,
-                      ),
-                      label: 'Главная',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.book_outlined,
-                      ),
-                      label: 'Новый сон',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.find_replace_outlined,
-                      ),
-                      label: 'Поиск',
-                    ),
-
-                    // BottomNavigationBarItem(
-                    //   icon: Icon(
-                    //     Icons.book_outlined,
-                    //   ),
-                    //   label: 'Лента',
-                    // ),
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        Icons.person_2_outlined,
-                      ),
-                      label: 'Профиль',
-                    ),
-                  ],
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
-    */
   }
 }
