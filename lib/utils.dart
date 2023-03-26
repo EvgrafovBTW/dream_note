@@ -21,6 +21,12 @@ String getMonthName(int m) {
   return monthNum[m] ?? 'Января';
 }
 
+String getDateString(String d) {
+  String dateString = d;
+  dateString = dateString.substring(0, dateString.indexOf('T'));
+  return dateString;
+}
+
 class DevBorder extends StatelessWidget {
   final Widget child;
   const DevBorder({

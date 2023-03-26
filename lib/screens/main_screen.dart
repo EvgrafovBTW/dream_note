@@ -1,6 +1,7 @@
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/logic/blocs/bottom_navigation/bloc/bottom_navigation_bloc.dart';
 import 'package:dream_note/models/dream_model.dart';
+import 'package:dream_note/screens/consecutive_screens/dream_screen.dart';
 import 'package:dream_note/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -101,12 +102,6 @@ class _DreamCardState extends State<DreamCard> {
       return newText;
     }
 
-    String getDateString(String d) {
-      String dateString = d;
-      dateString = dateString.substring(0, dateString.indexOf('T'));
-      return dateString;
-    }
-
     String getCardTitle() {
       String title = '';
       if (widget.dream.title != null) {
@@ -117,60 +112,86 @@ class _DreamCardState extends State<DreamCard> {
       return title;
     }
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: BlocBuilder<AppSettingsBloc, AppSettingsState>(
-          builder: (context, state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      getCardTitle(),
-                      style: TextStyle(
-                        fontSize: sHeight * 0.02,
-                        fontWeight: FontWeight.w500,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        platformPageRoute(
+          material: (context, platform) => MaterialPageRouteData(),
+          cupertino: (context, platform) => CupertinoPageRouteData(),
+          context: context,
+          builder: (context) => DreamScreen(widget.dream),
+        ),
+      ),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: BlocBuilder<AppSettingsBloc, AppSettingsState>(
+            builder: (context, state) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          getCardTitle(),
+                          style: TextStyle(
+                            fontSize: sHeight * 0.02,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      if (widget.dream.title != null)
+                        Text(
+                          getDateString(
+                              widget.dream.dreamDate.toIso8601String()),
+                          style: TextStyle(
+                            color: state.isDarkMode
+                                ? Colors.white54
+                                : Colors.black54,
+                          ),
+                        )
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: getCardText(widget.dream.dreamContent),
+                          ),
+                          if (widget.dream.dreamContent.length > 300)
+                            TextSpan(
+                              text: ' развернуть...',
+                              style: TextStyle(
+                                color: state.primaryColor,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(
+                                    context,
+                                    platformPageRoute(
+                                      material: (context, platform) =>
+                                          MaterialPageRouteData(),
+                                      cupertino: (context, platform) =>
+                                          CupertinoPageRouteData(),
+                                      context: context,
+                                      builder: (context) =>
+                                          DreamScreen(widget.dream),
+                                    ),
+                                  );
+                                },
+                            )
+                        ],
                       ),
                     ),
-                    if (widget.dream.title != null)
-                      Text(
-                        getDateString(widget.dream.dreamDate.toIso8601String()),
-                        style: TextStyle(
-                          color: state.isDarkMode
-                              ? Colors.white54
-                              : Colors.black54,
-                        ),
-                      )
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: getCardText(widget.dream.dreamContent),
-                        ),
-                        TextSpan(
-                          text: ' развернуть...',
-                          style: TextStyle(
-                            color: state.primaryColor,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              print('object');
-                            },
-                        )
-                      ],
-                    ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
