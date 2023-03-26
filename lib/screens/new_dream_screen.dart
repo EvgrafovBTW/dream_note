@@ -1,9 +1,13 @@
 import 'dart:io';
 
+import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
+import 'package:dream_note/models/dream_model.dart';
 import 'package:dream_note/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 class NewDreamScreen extends StatelessWidget {
   const NewDreamScreen({super.key});
@@ -14,6 +18,26 @@ class NewDreamScreen extends StatelessWidget {
     Size sSize = MediaQuery.of(context).size;
     TextEditingController textController =
         TextEditingController(text: fishText);
+    TextEditingController titleController = TextEditingController(text: '');
+    DreamsBloc dreamsBloc = BlocProvider.of<DreamsBloc>(context);
+
+    void addDream() async {
+      if (textController.text.isNotEmpty) {
+        await showPlatformDialog(
+          material: MaterialDialogData(),
+          context: context,
+          builder: (context) {
+            return DreamTitleDialog(
+              titleController: titleController,
+              textController: textController,
+              dreamsBloc: dreamsBloc,
+              dateTime: dateTimeNotifier.value,
+            );
+          },
+        );
+      }
+    }
+
     return SafeArea(
       child: SizedBox.expand(
         child: Padding(
@@ -36,27 +60,8 @@ class NewDreamScreen extends StatelessWidget {
                           await showModalBottomSheet(
                             context: context,
                             builder: (c) {
-                              return Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      PlatformTextButton(
-                                        onPressed: () => Navigator.pop(context),
-                                        child: const Text('Закрыть'),
-                                      ),
-                                    ],
-                                  ),
-                                  Expanded(
-                                    child: CupertinoDatePicker(
-                                      onDateTimeChanged: (value) =>
-                                          dateTimeNotifier.value = value,
-                                      use24hFormat: true,
-                                      mode: CupertinoDatePickerMode.date,
-                                    ),
-                                  ),
-                                ],
-                              );
+                              return DreamTimePicker(
+                                  dateTimeNotifier: dateTimeNotifier);
                             },
                           );
                         },
@@ -83,7 +88,7 @@ class NewDreamScreen extends StatelessWidget {
                       Flexible(
                         flex: 2,
                         child: FloatingActionButton(
-                          onPressed: () {},
+                          onPressed: addDream,
                           child: Icon(
                             Platform.isAndroid
                                 ? Icons.arrow_forward
@@ -103,6 +108,107 @@ class NewDreamScreen extends StatelessWidget {
   }
 }
 
+class DreamTitleDialog extends StatelessWidget {
+  const DreamTitleDialog({
+    super.key,
+    required this.titleController,
+    required this.textController,
+    required this.dateTime,
+    required this.dreamsBloc,
+  });
+
+  final TextEditingController titleController;
+  final TextEditingController textController;
+  final DateTime dateTime;
+  final DreamsBloc dreamsBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return PlatformAlertDialog(
+      title: const Text('Укажите название для своего сна'),
+      content: Wrap(
+        children: [
+          const Text('Иначе в качестве названия будет использована дата'),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: PlatformTextField(
+              controller: titleController,
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              PlatformTextButton(
+                onPressed: () {
+                  titleController.text = '';
+                  Navigator.pop(context);
+                },
+                child: const Text('Закрыть'),
+              ),
+              PlatformTextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  dreamsBloc.add(
+                    DreamAdd(
+                      Dream(
+                        dreamContent: textController.text,
+                        dreamDate: dateTime,
+                        moonPhase: 'Убывающая',
+                        title: titleController.text.isEmpty
+                            ? null
+                            : titleController.text,
+                      ),
+                    ),
+                  );
+                  textController.text = '';
+                  showSimpleNotification(
+                    Text(
+                        'Ваш сон от ${dateTime.toIso8601String().substring(0, dateTime.toIso8601String().indexOf('T'))} успешно записан'),
+                  );
+                },
+                child: const Text('Сохранить'),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class DreamTimePicker extends StatelessWidget {
+  const DreamTimePicker({
+    super.key,
+    required this.dateTimeNotifier,
+  });
+
+  final ValueNotifier<DateTime> dateTimeNotifier;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            PlatformTextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Закрыть'),
+            ),
+          ],
+        ),
+        Expanded(
+          child: CupertinoDatePicker(
+            onDateTimeChanged: (value) => dateTimeNotifier.value = value,
+            use24hFormat: true,
+            mode: CupertinoDatePickerMode.date,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class DreamTextField extends StatelessWidget {
   final TextEditingController controller;
   final int flex;
@@ -116,7 +222,8 @@ class DreamTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Flexible(
       flex: flex,
-      child: TextField(
+      child: PlatformTextField(
+        // autofocus: true,
         controller: controller,
         maxLines: null,
       ),

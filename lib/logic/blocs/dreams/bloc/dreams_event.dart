@@ -6,3 +6,8 @@ abstract class DreamsEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class DreamAdd extends DreamsEvent {
+  final Dream newDream;
+  const DreamAdd(this.newDream);
+}
