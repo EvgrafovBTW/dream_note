@@ -1,4 +1,4 @@
-package com.example.dream_note
+package com.bleed.dreamnote
 
 import io.flutter.embedding.android.FlutterActivity
 
