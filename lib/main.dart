@@ -80,6 +80,9 @@ class MainApp extends StatelessWidget {
             child: PlatformApp(
               material: (context, platform) => MaterialAppData(
                 theme: ThemeData(
+                  primaryColorDark: settingsState.primaryColor,
+                  primaryColorLight: settingsState.primaryColor,
+                  useMaterial3: false,
                   colorScheme: ColorScheme(
                     brightness: settingsState.isDarkMode
                         ? Brightness.dark
@@ -144,10 +147,12 @@ class MainApp extends StatelessWidget {
                             */
                         /*
                         floatingActionButton: FloatingActionButton(
+                          heroTag: 'floatingActionButton',
                           onPressed: () => appSettingsBloc.add(ToggleDarkMode(
                               !appSettingsBloc.state.isDarkMode)),
                         ),
                         */
+
                         // backgroundColor: Colors.indigoAccent,
                         body: SizedBox.expand(
                           child: IndexedStack(
@@ -176,7 +181,7 @@ class MainApp extends StatelessWidget {
                             ),
                             BottomNavigationBarItem(
                               icon: Icon(
-                                Icons.find_replace_outlined,
+                                Icons.search,
                               ),
                               label: 'Поиск',
                             ),
