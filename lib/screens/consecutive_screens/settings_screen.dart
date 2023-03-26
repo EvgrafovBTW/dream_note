@@ -103,17 +103,20 @@ class SettingsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Opacity(
-                      opacity: 0.5,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Защищенный режим',
-                            style: settingLabelStyle,
-                          ),
-                          Checkbox(value: false, onChanged: (v) {})
-                        ],
+                    GestureDetector(
+                      onTap: inProductionNotif,
+                      child: Opacity(
+                        opacity: 0.5,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Защищенный режим',
+                              style: settingLabelStyle,
+                            ),
+                            Checkbox(value: false, onChanged: (v) {})
+                          ],
+                        ),
                       ),
                     ),
                     /*

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 String getMonthName(int m) {
   Map<int, String> monthNum = {
@@ -26,6 +27,8 @@ String getDateString(String d) {
   dateString = dateString.substring(0, dateString.indexOf('T'));
   return dateString;
 }
+
+inProductionNotif() => showSimpleNotification(const Text('В разработке'));
 
 class DevBorder extends StatelessWidget {
   final Widget child;

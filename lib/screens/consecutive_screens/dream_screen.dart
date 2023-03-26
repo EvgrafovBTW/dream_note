@@ -58,7 +58,7 @@ class DreamScreen extends StatelessWidget {
             ),
             actions: [
               PlatformIconButton(
-                onPressed: () {},
+                onPressed: inProductionNotif,
                 icon: const Icon(
                   Icons.favorite_outline,
                   color: Colors.white54,

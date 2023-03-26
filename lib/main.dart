@@ -8,6 +8,7 @@ import 'package:dream_note/logic/blocs/user/bloc/user_bloc.dart';
 import 'package:dream_note/screens/main_screen.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/screens/profile_screen.dart';
+import 'package:dream_note/utils.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:path_provider/path_provider.dart';
@@ -58,7 +59,11 @@ class MainApp extends StatelessWidget {
     AppSettingsBloc appSettingsBloc = BlocProvider.of<AppSettingsBloc>(context);
 
     onPageTapped(int index) {
-      bottomNavigationBloc.add(BottomNavTap(index));
+      if (index != 2) {
+        bottomNavigationBloc.add(BottomNavTap(index));
+      } else {
+        inProductionNotif();
+      }
     }
 
     Future<void> loadAppData() async {
@@ -79,6 +84,7 @@ class MainApp extends StatelessWidget {
           Placeholder(color: settingsState.primaryColor),
           const UserProfile(),
         ];
+
         return KeyboardDismisser(
           child: OverlaySupport.global(
             child: PlatformApp(
