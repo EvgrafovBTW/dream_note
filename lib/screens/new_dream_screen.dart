@@ -16,8 +16,7 @@ class NewDreamScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     ValueNotifier<DateTime> dateTimeNotifier = ValueNotifier(DateTime.now());
     Size sSize = MediaQuery.of(context).size;
-    TextEditingController textController =
-        TextEditingController(text: fishText);
+    TextEditingController textController = TextEditingController();
     TextEditingController titleController = TextEditingController(text: '');
     DreamsBloc dreamsBloc = BlocProvider.of<DreamsBloc>(context);
 

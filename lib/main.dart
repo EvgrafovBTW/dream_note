@@ -70,12 +70,9 @@ class MainApp extends StatelessWidget {
     return BlocBuilder<AppSettingsBloc, AppSettingsState>(
       builder: (context, settingsState) {
         List<Widget> pages = [
-          // Placeholder(color: settingsState.primaryColor),
           const MainScreen(),
-          // Placeholder(color: settingsState.primaryColor),
           const NewDreamScreen(),
           Placeholder(color: settingsState.primaryColor),
-          // Placeholder(color: Colors.green),
           const UserProfile(),
         ];
         return KeyboardDismisser(
@@ -145,10 +142,12 @@ class MainApp extends StatelessWidget {
                               )
                             ]),
                             */
+                        /*
                         floatingActionButton: FloatingActionButton(
                           onPressed: () => appSettingsBloc.add(ToggleDarkMode(
                               !appSettingsBloc.state.isDarkMode)),
                         ),
+                        */
                         // backgroundColor: Colors.indigoAccent,
                         body: SizedBox.expand(
                           child: IndexedStack(

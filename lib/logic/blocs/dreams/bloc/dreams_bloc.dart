@@ -1,11 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:dream_note/models/dream_model.dart';
+import 'dart:convert';
 import 'package:equatable/equatable.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'dreams_event.dart';
 part 'dreams_state.dart';
 
-class DreamsBloc extends Bloc<DreamsEvent, DreamsState> {
+class DreamsBloc extends HydratedBloc<DreamsEvent, DreamsState> {
   DreamsBloc() : super(DreamsInitial()) {
     on<DreamAdd>((event, emit) {
       List<Dream> newDreams = List.from(state.dreams);
@@ -17,4 +19,10 @@ class DreamsBloc extends Bloc<DreamsEvent, DreamsState> {
       );
     });
   }
+
+  @override
+  DreamsState? fromJson(Map<String, dynamic> json) => DreamsState.fromMap(json);
+
+  @override
+  Map<String, dynamic>? toJson(DreamsState state) => state.toMap();
 }
