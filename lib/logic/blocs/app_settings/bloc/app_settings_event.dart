@@ -12,6 +12,11 @@ class ChangeMainAppColor extends AppSettingsEvent {
   const ChangeMainAppColor(this.newMainColor);
 }
 
+class ChangeAdditionalAppColor extends AppSettingsEvent {
+  final Color newAdditionalColor;
+  const ChangeAdditionalAppColor(this.newAdditionalColor);
+}
+
 class ToggleDarkMode extends AppSettingsEvent {
   final bool darkModeValue;
   const ToggleDarkMode(this.darkModeValue);

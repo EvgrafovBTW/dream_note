@@ -77,6 +77,21 @@ deleteDream({
   );
 }
 
+platformNavigateTo({
+  required BuildContext context,
+  required Widget screen,
+}) {
+  Navigator.push(
+    context,
+    platformPageRoute(
+      material: (context, platform) => MaterialPageRouteData(),
+      cupertino: (context, platform) => CupertinoPageRouteData(),
+      context: context,
+      builder: (context) => screen,
+    ),
+  );
+}
+
 class DevBorder extends StatelessWidget {
   final Widget child;
   const DevBorder({

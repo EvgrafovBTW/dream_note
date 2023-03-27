@@ -17,49 +17,13 @@ class DreamScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /*
-    return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(color: Colors.white),
-        actions: [
-          PlatformIconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.favorite_outline,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-      body: SizedBox.expand(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-          child: Column(
-            children: [
-              DreamDateTime(
-                date: dream.dreamDate,
-                sSize: MediaQuery.of(context).size,
-              ),
-              const Divider(),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text(dream.dreamContent),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );*/
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             leading: const BackButton(
-              color: Colors.white,
-            ),
+                // color: Colors.white,
+                ),
             actions: [
               PlatformIconButton(
                 onPressed: () async {
@@ -71,7 +35,6 @@ class DreamScreen extends StatelessWidget {
                 },
                 icon: const Icon(
                   Icons.delete,
-                  color: Colors.white,
                 ),
               ),
               PlatformIconButton(

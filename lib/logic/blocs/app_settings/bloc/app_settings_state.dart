@@ -8,7 +8,7 @@ class AppSettingsState extends Equatable {
   bool isDarkMode;
   AppSettingsState({
     this.primaryColor = Colors.teal,
-    this.onPrimaryColor = Colors.white,
+    this.onPrimaryColor = Colors.grey,
     this.isDarkMode = false,
   });
 

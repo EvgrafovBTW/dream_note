@@ -92,6 +92,9 @@ class MainApp extends StatelessWidget {
             child: PlatformApp(
               material: (context, platform) => MaterialAppData(
                 theme: ThemeData(
+                  iconTheme: IconThemeData(
+                    color: settingsState.onPrimaryColor,
+                  ),
                   primaryColorDark: settingsState.primaryColor,
                   primaryColorLight: settingsState.primaryColor,
                   useMaterial3: false,
@@ -108,7 +111,7 @@ class MainApp extends StatelessWidget {
                     background: Colors.white,
                     onBackground: Colors.white,
                     surface: settingsState.primaryColor,
-                    onSurface: settingsState.primaryColor,
+                    onSurface: settingsState.onPrimaryColor,
                   ),
                 ),
               ),

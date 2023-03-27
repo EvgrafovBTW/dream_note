@@ -17,7 +17,7 @@ class SettingsScreen extends StatelessWidget {
     return BlocBuilder<AppSettingsBloc, AppSettingsState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(leading: const BackButton(color: Colors.white)),
+          appBar: AppBar(leading: const BackButton()),
           body: SizedBox.expand(
             child: SingleChildScrollView(
               child: Padding(
@@ -45,47 +45,8 @@ class SettingsScreen extends StatelessWidget {
                       onTap: () {
                         showPlatformModalSheet(
                           context: context,
-                          builder: (context) =>
-                              BlocBuilder<AppSettingsBloc, AppSettingsState>(
-                            builder: (context, state) {
-                              return Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text('Ночной режим'),
-                                            PlatformSwitch(
-                                              value: state.isDarkMode,
-                                              onChanged: (v) {
-                                                appSettingsBloc
-                                                    .add(ToggleDarkMode(v));
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                        PlatformTextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: const Text('Закрыть'),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: SettingsColorChoosePanel(
-                                      isDarkMode: state.isDarkMode,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
+                          builder: (context) => MainColorChangeSheet(
+                              appSettingsBloc: appSettingsBloc),
                         );
                       },
                       child: Row(
@@ -98,6 +59,38 @@ class SettingsScreen extends StatelessWidget {
                           SettingsColorPane(
                             side: sHeight * 0.05,
                             color: state.primaryColor,
+                            isDarkMode: state.isDarkMode,
+                          )
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showPlatformModalSheet(
+                          context: context,
+                          builder: (context) => AdditionalColorChangeSheet(
+                              appSettingsBloc: appSettingsBloc),
+                        );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Дополнительная цветовая схема',
+                                    style: settingLabelStyle,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SettingsColorPane(
+                            side: sHeight * 0.05,
+                            color: state.onPrimaryColor,
                             isDarkMode: state.isDarkMode,
                           )
                         ],
@@ -136,18 +129,126 @@ class SettingsScreen extends StatelessWidget {
   }
 }
 
+class MainColorChangeSheet extends StatelessWidget {
+  const MainColorChangeSheet({
+    super.key,
+    required this.appSettingsBloc,
+  });
+
+  final AppSettingsBloc appSettingsBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppSettingsBloc, AppSettingsState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text('Ночной режим'),
+                      PlatformSwitch(
+                        value: state.isDarkMode,
+                        onChanged: (v) {
+                          appSettingsBloc.add(ToggleDarkMode(v));
+                        },
+                      ),
+                    ],
+                  ),
+                  PlatformTextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Закрыть'),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SettingsColorChoosePanel(
+                isDarkMode: state.isDarkMode,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class AdditionalColorChangeSheet extends StatelessWidget {
+  const AdditionalColorChangeSheet({
+    super.key,
+    required this.appSettingsBloc,
+  });
+
+  final AppSettingsBloc appSettingsBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AppSettingsBloc, AppSettingsState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text('Ночной режим'),
+                      PlatformSwitch(
+                        value: state.isDarkMode,
+                        onChanged: (v) {
+                          appSettingsBloc.add(ToggleDarkMode(v));
+                        },
+                      ),
+                    ],
+                  ),
+                  PlatformTextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Закрыть'),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SettingsColorChoosePanel(
+                isDarkMode: state.isDarkMode,
+                mode: ChangeColorMode.additional,
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
 class SettingsColorChoosePanel extends StatelessWidget {
+  final ChangeColorMode mode;
   final bool isDarkMode;
 
   const SettingsColorChoosePanel({
     required this.isDarkMode,
+    this.mode = ChangeColorMode.main,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     void applyChoosenColor(Color color) {
-      BlocProvider.of<AppSettingsBloc>(context).add(ChangeMainAppColor(color));
+      if (mode == ChangeColorMode.main) {
+        BlocProvider.of<AppSettingsBloc>(context)
+            .add(ChangeMainAppColor(color));
+      }
+      if (mode == ChangeColorMode.additional) {
+        BlocProvider.of<AppSettingsBloc>(context)
+            .add(ChangeAdditionalAppColor(color));
+      }
     }
 
     return GridView.count(
@@ -195,3 +296,5 @@ class SettingsColorPane extends StatelessWidget {
     );
   }
 }
+
+enum ChangeColorMode { main, additional }

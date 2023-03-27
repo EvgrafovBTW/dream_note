@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/models/user_model.dart';
+import 'package:dream_note/screens/consecutive_screens/favorite_dreams.dart';
+import 'package:dream_note/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -22,71 +24,106 @@ class UserProfile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Stack(
             children: [
-              BlocBuilder<UserBloc, UserState>(
-                builder: (context, state) {
-                  String getUserName() {
-                    String name = '';
-                    if (state.user != null) {
-                      name = state.user!.name;
-                      if (state.user!.lastName != null) {
-                        name = '$name ${state.user!.lastName}';
-                      }
-                    } else {
-                      name = 'Пока только настройки';
-                    }
-                    return name;
-                  }
+              Column(
+                children: [
+                  Flexible(
+                    flex: 2,
+                    child: BlocBuilder<UserBloc, UserState>(
+                      builder: (context, state) {
+                        String getUserName() {
+                          String name = '';
+                          if (state.user != null) {
+                            name = state.user!.name;
+                            if (state.user!.lastName != null) {
+                              name = '$name ${state.user!.lastName}';
+                            }
+                          } else {
+                            name = 'Пока только настройки';
+                          }
+                          return name;
+                        }
 
-                  String getUserAbName() {
-                    String abName = '';
-                    if (state.user != null) {
-                      abName = state.user!.name[0];
-                      if (state.user!.lastName != null) {
-                        abName = '$abName ${state.user!.lastName![0]}';
-                      }
-                    } else {
-                      abName = '?';
-                    }
-                    return abName;
-                  }
+                        String getUserAbName() {
+                          String abName = '';
+                          if (state.user != null) {
+                            abName = state.user!.name[0];
+                            if (state.user!.lastName != null) {
+                              abName = '$abName ${state.user!.lastName![0]}';
+                            }
+                          } else {
+                            abName = '?';
+                          }
+                          return abName;
+                        }
 
-                  return GestureDetector(
-                    onTap: () => Navigator.push(
-                      context,
-                      platformPageRoute(
-                        material: (context, platform) =>
-                            MaterialPageRouteData(),
-                        cupertino: (context, platform) =>
-                            CupertinoPageRouteData(),
-                        context: context,
-                        builder: (context) => const SettingsScreen(),
-                      ),
-                    ),
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: CircleAvatar(
-                              radius: sHeight / 12,
-                              child: Text(
-                                getUserAbName(),
-                                style: TextStyle(fontSize: sHeight * 0.04),
-                              ),
+                        return GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            platformPageRoute(
+                              material: (context, platform) =>
+                                  MaterialPageRouteData(),
+                              cupertino: (context, platform) =>
+                                  CupertinoPageRouteData(),
+                              context: context,
+                              builder: (context) => const SettingsScreen(),
                             ),
                           ),
-                          Text(
-                            getUserName(),
-                            style: TextStyle(fontSize: sHeight * 0.04),
-                            overflow: TextOverflow.clip,
-                            textAlign: TextAlign.center,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: CircleAvatar(
+                                    radius: sHeight / 15,
+                                    child: Text(
+                                      getUserAbName(),
+                                      style:
+                                          TextStyle(fontSize: sHeight * 0.04),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  getUserName(),
+                                  style: TextStyle(fontSize: sHeight * 0.04),
+                                  overflow: TextOverflow.clip,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                  Flexible(
+                    flex: 2,
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      children: [
+                        ProfileMenuCard(
+                          'Избранное',
+                          onTap: () {
+                            platformNavigateTo(
+                              context: context,
+                              screen: const FavoriteDreamsScreen(),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.favorite_outline,
+                          ),
+                        ),
+                        ProfileMenuCard(
+                          'Избранное',
+                          onTap: () {
+                            print('object');
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
               Align(
                 alignment: Alignment.topRight,
@@ -104,6 +141,50 @@ class UserProfile extends StatelessWidget {
                   icon: const Icon(Icons.settings),
                 ),
               )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ProfileMenuCard extends StatelessWidget {
+  final String label;
+  final Widget? icon;
+  final VoidCallback onTap;
+  const ProfileMenuCard(
+    this.label, {
+    this.icon,
+    required this.onTap,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Expanded(
+                child: icon != null
+                    ? FittedBox(
+                        child: icon!,
+                      )
+                    : const SizedBox(),
+              ),
+              Expanded(
+                child: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: Text(
+                    label,
+                  ),
+                ),
+              ),
             ],
           ),
         ),

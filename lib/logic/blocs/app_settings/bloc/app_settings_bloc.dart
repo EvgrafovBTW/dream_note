@@ -16,6 +16,13 @@ class AppSettingsBloc extends HydratedBloc<AppSettingsEvent, AppSettingsState> {
         ),
       ),
     );
+    on<ChangeAdditionalAppColor>(
+      (event, emit) => emit(
+        state.copyWith(
+          onPrimaryColor: event.newAdditionalColor,
+        ),
+      ),
+    );
     on<ToggleDarkMode>(
       (event, emit) => emit(
         state.copyWith(
