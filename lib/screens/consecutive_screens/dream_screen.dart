@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../../models/dream_model.dart';
@@ -113,9 +115,13 @@ class DreamHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlatformAppBar(
       automaticallyImplyLeading: false,
-      backgroundColor: Colors.transparent,
-      // material: (context, platform) =>
-      //     MaterialAppBarData(shadowColor: Colors.transparent),
+      backgroundColor:
+          BlocProvider.of<AppSettingsBloc>(context).state.isDarkMode
+              ? Colors.white24
+              : Colors.black38,
+      material: (context, platform) =>
+          MaterialAppBarData(shadowColor: Colors.transparent, elevation: 0),
+      cupertino: (context, platform) => CupertinoNavigationBarData(),
       title: dream.title != null
           ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

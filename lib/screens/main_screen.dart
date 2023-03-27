@@ -79,28 +79,6 @@ class MainScreen extends StatelessWidget {
               ),
             ],
           );
-          /*
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                PlatformAppBar(),
-                for (Dream d in state.dreams)
-                  Container(
-                    child: Column(
-                      children: [
-                        Divider(),
-                        Text(
-                          d.title ?? d.dreamDate.toIso8601String(),
-                        ),
-                        Text(d.dreamContent),
-                        Divider(),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          );
-          */
         },
       ),
     );
