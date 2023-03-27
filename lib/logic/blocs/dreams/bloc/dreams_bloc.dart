@@ -18,6 +18,15 @@ class DreamsBloc extends HydratedBloc<DreamsEvent, DreamsState> {
         ),
       );
     });
+    on<DreamRemove>((event, emit) {
+      List<Dream> newDreams = List.from(state.dreams);
+      newDreams.removeWhere((d) => d.id == event.dream.id);
+      emit(
+        state.copyWith(
+          dreams: newDreams,
+        ),
+      );
+    });
   }
 
   @override

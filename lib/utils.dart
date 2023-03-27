@@ -1,7 +1,11 @@
+import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
+import 'package:dream_note/models/dream_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:overlay_support/overlay_support.dart';
 
 String getMonthName(int m) {
@@ -29,6 +33,49 @@ String getDateString(String d) {
 }
 
 inProductionNotif() => showSimpleNotification(const Text('В разработке'));
+
+deleteDream({
+  required BuildContext context,
+  required Dream dream,
+}) async {
+  String dreamName = '';
+  if (dream.title != null) {
+    dreamName = '"${dream.title!}"';
+  } else {
+    dreamName = 'от ${getDateString(dream.dreamDate.toIso8601String())}';
+  }
+  await showPlatformDialog(
+    context: context,
+    builder: (context) => PlatformAlertDialog(
+      title: Column(
+        children: [
+          Text(
+            'Удалить сон $dreamName?',
+          )
+        ],
+      ),
+      actions: [
+        PlatformTextButton(
+          onPressed: () {
+            BlocProvider.of<DreamsBloc>(context).add(DreamRemove(dream));
+            showSimpleNotification(Text('сон $dreamName успешно удалён'));
+            Navigator.pop(context);
+          },
+          child: const Text(
+            'Да',
+            style: TextStyle(
+              color: Colors.red,
+            ),
+          ),
+        ),
+        PlatformTextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Нет'),
+        ),
+      ],
+    ),
+  );
+}
 
 class DevBorder extends StatelessWidget {
   final Widget child;
@@ -60,17 +107,17 @@ List<Color> settingsColors = [
   Colors.lightGreen,
   Colors.lightGreenAccent,
   Colors.lime,
-  Colors.amber,
-  Colors.blue,
   Colors.indigo,
+  Colors.indigoAccent,
+  Colors.blue,
   Colors.cyan,
   Colors.lightBlue,
   Colors.pink,
   Colors.pinkAccent,
   Colors.orange,
-  Colors.red,
-  const Color.fromARGB(255, 104, 20, 14),
   Colors.deepOrange,
+  const Color.fromARGB(255, 104, 20, 14),
+  Colors.brown,
   Colors.purple,
   Colors.deepPurple,
   Colors.grey,

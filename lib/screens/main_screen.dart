@@ -7,6 +7,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../logic/blocs/dreams/bloc/dreams_bloc.dart';
 
@@ -38,7 +39,34 @@ class MainScreen extends StatelessWidget {
           }
           List<Widget> dreamCards = List.generate(
             state.dreams.length,
-            (i) => DreamCard(state.dreams[i]),
+            (i) => Slidable(
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    onPressed: (context) {
+                      deleteDream(context: context, dream: state.dreams[i]);
+                    },
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.red,
+                    icon: Icons.delete,
+                  ),
+                  SlidableAction(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    onPressed: (context) {},
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.amber,
+                    icon: Icons.favorite,
+                  ),
+                ],
+              ),
+              child: DreamCard(
+                state.dreams[i],
+              ),
+            ),
           );
           return CustomScrollView(
             slivers: [

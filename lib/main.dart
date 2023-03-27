@@ -157,13 +157,12 @@ class MainApp extends StatelessWidget {
                               )
                             ]),
                             */
-                        /*
+
                         floatingActionButton: FloatingActionButton(
                           heroTag: 'floatingActionButton',
                           onPressed: () => appSettingsBloc.add(ToggleDarkMode(
                               !appSettingsBloc.state.isDarkMode)),
                         ),
-                        */
 
                         // backgroundColor: Colors.indigoAccent,
                         body: SizedBox.expand(

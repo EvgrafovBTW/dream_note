@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/utils.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +59,19 @@ class DreamScreen extends StatelessWidget {
               color: Colors.white,
             ),
             actions: [
+              PlatformIconButton(
+                onPressed: () async {
+                  await deleteDream(
+                    context: context,
+                    dream: dream,
+                  );
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ),
+              ),
               PlatformIconButton(
                 onPressed: inProductionNotif,
                 icon: const Icon(
