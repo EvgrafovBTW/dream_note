@@ -150,6 +150,7 @@ class DreamTitleDialog extends StatelessWidget {
                   dreamsBloc.add(
                     DreamAdd(
                       Dream(
+                        id: dreamsBloc.state.dreams.length,
                         dreamContent: textController.text,
                         dreamDate: dateTime,
                         moonPhase: 'Убывающая',
@@ -222,7 +223,7 @@ class DreamTextField extends StatelessWidget {
     return Flexible(
       flex: flex,
       child: PlatformTextField(
-        // autofocus: true,
+        autofocus: false,
         controller: controller,
         maxLines: null,
       ),

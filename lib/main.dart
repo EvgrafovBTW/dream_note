@@ -5,6 +5,7 @@ import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart'
 import 'package:dream_note/logic/blocs/bottom_navigation/bloc/bottom_navigation_bloc.dart';
 import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
 import 'package:dream_note/logic/blocs/user/bloc/user_bloc.dart';
+import 'package:dream_note/models/dream_model.dart';
 import 'package:dream_note/screens/main_screen.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/screens/profile_screen.dart';
@@ -54,6 +55,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppLoadBloc appLoadBloc = BlocProvider.of<AppLoadBloc>(context);
+    DreamsBloc dreamsBloc = BlocProvider.of<DreamsBloc>(context);
     BottomNavigationBloc bottomNavigationBloc =
         BlocProvider.of<BottomNavigationBloc>(context);
     AppSettingsBloc appSettingsBloc = BlocProvider.of<AppSettingsBloc>(context);
