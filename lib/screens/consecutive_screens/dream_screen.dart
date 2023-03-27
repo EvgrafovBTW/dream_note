@@ -22,8 +22,8 @@ class DreamScreen extends StatelessWidget {
         slivers: [
           SliverAppBar(
             leading: const BackButton(
-                // color: Colors.white,
-                ),
+              color: Colors.white,
+            ),
             actions: [
               PlatformIconButton(
                 onPressed: () async {

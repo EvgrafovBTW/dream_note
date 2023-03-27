@@ -17,7 +17,11 @@ class SettingsScreen extends StatelessWidget {
     return BlocBuilder<AppSettingsBloc, AppSettingsState>(
       builder: (context, state) {
         return Scaffold(
-          appBar: AppBar(leading: const BackButton()),
+          appBar: AppBar(
+            leading: const BackButton(
+              color: Colors.white,
+            ),
+          ),
           body: SizedBox.expand(
             child: SingleChildScrollView(
               child: Padding(
@@ -219,6 +223,29 @@ class AdditionalColorChangeSheet extends StatelessWidget {
               child: SettingsColorChoosePanel(
                 isDarkMode: state.isDarkMode,
                 mode: ChangeColorMode.additional,
+                example: Column(
+                  children: [
+                    AppBar(
+                      automaticallyImplyLeading: false,
+                      title: const Text('DreamNote'),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: const [
+                              Icon(Icons.favorite_border_outlined),
+                              Text(' Иконка')
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
@@ -229,12 +256,14 @@ class AdditionalColorChangeSheet extends StatelessWidget {
 }
 
 class SettingsColorChoosePanel extends StatelessWidget {
+  final Widget? example;
   final ChangeColorMode mode;
   final bool isDarkMode;
 
   const SettingsColorChoosePanel({
     required this.isDarkMode,
     this.mode = ChangeColorMode.main,
+    this.example,
     super.key,
   });
 
@@ -251,20 +280,36 @@ class SettingsColorChoosePanel extends StatelessWidget {
       }
     }
 
-    return GridView.count(
-      crossAxisCount: 4,
-      shrinkWrap: true,
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+    return Column(
       children: [
-        for (var color in settingsColors)
-          GestureDetector(
-            onTap: () {
-              applyChoosenColor(color);
-            },
-            child: SettingsColorPane(color: color, isDarkMode: isDarkMode),
+        if (example != null) example!,
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                GridView.count(
+                  physics: NeverScrollableScrollPhysics(),
+                  crossAxisCount: 4,
+                  shrinkWrap: true,
+                  crossAxisSpacing: 20,
+                  mainAxisSpacing: 20,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                  children: [
+                    for (var color in settingsColors)
+                      GestureDetector(
+                        onTap: () {
+                          applyChoosenColor(color);
+                        },
+                        child: SettingsColorPane(
+                            color: color, isDarkMode: isDarkMode),
+                      ),
+                  ],
+                ),
+              ],
+            ),
           ),
+        ),
       ],
     );
   }
