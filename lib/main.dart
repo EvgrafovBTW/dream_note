@@ -138,26 +138,6 @@ class MainApp extends StatelessWidget {
                       BottomNavigationState>(
                     builder: (context, state) {
                       return Scaffold(
-                        /*
-                        floatingActionButton: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              FloatingActionButton(
-                                onPressed: () => appSettingsBloc
-                                    .add(const ChangeMainAppColor(Colors.red)),
-                                child: Icon(Icons.color_lens),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: FloatingActionButton(
-                                  onPressed: () => appSettingsBloc
-                                      .add(const ChangeMainAppColor(Colors.green)),
-                                  child: Icon(Icons.color_lens),
-                                ),
-                              )
-                            ]),
-                            */
-
                         floatingActionButton: FloatingActionButton(
                           heroTag: 'floatingActionButton',
                           onPressed: () => appSettingsBloc.add(ToggleDarkMode(
