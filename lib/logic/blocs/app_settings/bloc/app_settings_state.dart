@@ -6,10 +6,12 @@ class AppSettingsState extends Equatable {
   Color primaryColor;
   Color onPrimaryColor;
   bool isDarkMode;
+  bool isGuardedMode;
   AppSettingsState({
     this.primaryColor = Colors.teal,
     this.onPrimaryColor = Colors.grey,
     this.isDarkMode = false,
+    this.isGuardedMode = false,
   });
 
   @override
@@ -17,17 +19,20 @@ class AppSettingsState extends Equatable {
         primaryColor,
         onPrimaryColor,
         isDarkMode,
+        isGuardedMode,
       ];
 
   AppSettingsState copyWith({
     Color? primaryColor,
     Color? onPrimaryColor,
     bool? isDarkMode,
+    bool? isGuardedMode,
   }) {
     return AppSettingsState(
       primaryColor: primaryColor ?? this.primaryColor,
       onPrimaryColor: onPrimaryColor ?? this.onPrimaryColor,
       isDarkMode: isDarkMode ?? this.isDarkMode,
+      isGuardedMode: isGuardedMode ?? this.isGuardedMode,
     );
   }
 
@@ -36,6 +41,7 @@ class AppSettingsState extends Equatable {
       'primaryColor': primaryColor.value,
       'onPrimaryColor': onPrimaryColor.value,
       'isDarkMode': isDarkMode,
+      'isGuardedMode': isGuardedMode,
     };
   }
 
@@ -44,6 +50,7 @@ class AppSettingsState extends Equatable {
       primaryColor: Color(map['primaryColor'] as int),
       onPrimaryColor: Color(map['onPrimaryColor'] as int),
       isDarkMode: map['isDarkMode'] as bool,
+      isGuardedMode: map['isGuardedMode'] as bool,
     );
   }
 

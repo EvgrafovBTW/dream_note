@@ -21,3 +21,8 @@ class ToggleDarkMode extends AppSettingsEvent {
   final bool darkModeValue;
   const ToggleDarkMode(this.darkModeValue);
 }
+
+class ToggleGuardedMode extends AppSettingsEvent {
+  final bool guardedModeValue;
+  const ToggleGuardedMode(this.guardedModeValue);
+}

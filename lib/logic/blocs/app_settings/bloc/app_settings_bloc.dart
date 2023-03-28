@@ -30,6 +30,13 @@ class AppSettingsBloc extends HydratedBloc<AppSettingsEvent, AppSettingsState> {
         ),
       ),
     );
+    on<ToggleGuardedMode>(
+      (event, emit) => emit(
+        state.copyWith(
+          isGuardedMode: event.guardedModeValue,
+        ),
+      ),
+    );
   }
 
   @override

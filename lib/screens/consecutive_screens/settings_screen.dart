@@ -100,21 +100,20 @@ class SettingsScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    GestureDetector(
-                      onTap: inProductionNotif,
-                      child: Opacity(
-                        opacity: 0.5,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Защищенный режим',
-                              style: settingLabelStyle,
-                            ),
-                            Checkbox(value: false, onChanged: (v) {})
-                          ],
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Защищенный режим',
+                          style: settingLabelStyle,
                         ),
-                      ),
+                        PlatformSwitch(
+                          value: state.isGuardedMode,
+                          onChanged: (v) {
+                            appSettingsBloc.add(ToggleGuardedMode(v));
+                          },
+                        )
+                      ],
                     ),
                     /*
                     ChangeNameSheet(
