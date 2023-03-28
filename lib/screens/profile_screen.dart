@@ -2,12 +2,12 @@
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/models/user_model.dart';
 import 'package:dream_note/screens/consecutive_screens/favorite_dreams.dart';
+import 'package:dream_note/screens/consecutive_screens/user_credentials_change.dart';
 import 'package:dream_note/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-import 'package:dream_note/logic/blocs/user/bloc/user_bloc.dart';
 import 'package:dream_note/screens/consecutive_screens/settings_screen.dart';
 
 class UserProfile extends StatelessWidget {
@@ -28,7 +28,44 @@ class UserProfile extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 2,
-                    child: BlocBuilder<UserBloc, UserState>(
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        platformPageRoute(
+                          material: (context, platform) =>
+                              MaterialPageRouteData(),
+                          cupertino: (context, platform) =>
+                              CupertinoPageRouteData(),
+                          context: context,
+                          builder: (context) => const SettingsScreen(),
+                        ),
+                      ),
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: CircleAvatar(
+                                radius: sHeight / 15,
+                                child: Text(
+                                  'getUserAbName()',
+                                  style: TextStyle(fontSize: sHeight * 0.04),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'getUserName()',
+                              style: TextStyle(fontSize: sHeight * 0.04),
+                              overflow: TextOverflow.clip,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    /*
+                    BlocBuilder<UserBloc, UserState>(
                       builder: (context, state) {
                         String getUserName() {
                           String name = '';
@@ -96,6 +133,7 @@ class UserProfile extends StatelessWidget {
                         );
                       },
                     ),
+                  */
                   ),
                   Flexible(
                     flex: 2,
@@ -115,10 +153,16 @@ class UserProfile extends StatelessWidget {
                           ),
                         ),
                         ProfileMenuCard(
-                          'Избранное',
+                          'Заполнить профиль',
                           onTap: () {
-                            print('object');
+                            platformNavigateTo(
+                              context: context,
+                              screen: const UserCredentialsScreen(),
+                            );
                           },
+                          icon: const Icon(
+                            Icons.person_outline,
+                          ),
                         ),
                       ],
                     ),
@@ -178,11 +222,16 @@ class ProfileMenuCard extends StatelessWidget {
                     : const SizedBox(),
               ),
               Expanded(
-                child: FittedBox(
-                  fit: BoxFit.fitWidth,
-                  child: Text(
-                    label,
-                  ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      label,
+                      style: TextStyle(
+                          fontSize: MediaQuery.of(context).size.height * 0.03),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -260,18 +309,7 @@ class _ChangeNameSheetState extends State<ChangeNameSheet> {
           ),
         ),
         PlatformTextButton(
-          onPressed: () {
-            if (nameController.text.isNotEmpty) {
-              BlocProvider.of<UserBloc>(context).add(
-                ChangeUserData(
-                  DreamUser(
-                    name: nameController.text,
-                    lastName: lastNameController.text,
-                  ),
-                ),
-              );
-            }
-          },
+          onPressed: () {},
           child: const Text('Обновить имя пользователя'),
         )
       ],

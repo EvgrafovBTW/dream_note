@@ -4,8 +4,7 @@ import 'package:dream_note/logic/blocs/app_load/bloc/app_load_bloc.dart';
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/logic/blocs/bottom_navigation/bloc/bottom_navigation_bloc.dart';
 import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
-import 'package:dream_note/logic/blocs/user/bloc/user_bloc.dart';
-import 'package:dream_note/models/dream_model.dart';
+// import 'package:dream_note/logic/blocs/user/bloc/user_bloc.dart';
 import 'package:dream_note/screens/main_screen.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/screens/profile_screen.dart';
@@ -40,9 +39,9 @@ void main() async {
         BlocProvider(
           create: (context) => DreamsBloc(),
         ),
-        BlocProvider(
-          create: (context) => UserBloc(),
-        ),
+        // BlocProvider(
+        //   create: (context) => UserBloc(),
+        // ),
       ],
       child: const MainApp(),
     ),
@@ -163,7 +162,7 @@ class MainApp extends StatelessWidget {
                           items: const [
                             BottomNavigationBarItem(
                               icon: Icon(
-                                Icons.home,
+                                Icons.home_outlined,
                               ),
                               label: 'Главная',
                             ),
