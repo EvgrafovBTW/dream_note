@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
+import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/utils.dart';
 import 'package:flutter/material.dart';
@@ -37,12 +38,22 @@ class DreamScreen extends StatelessWidget {
                   Icons.delete,
                 ),
               ),
-              PlatformIconButton(
-                onPressed: inProductionNotif,
-                icon: const Icon(
-                  Icons.favorite_outline,
-                  color: Colors.white54,
-                ),
+              BlocBuilder<DreamsBloc, DreamsState>(
+                builder: (context, state) {
+                  Dream currentDream =
+                      state.dreams.firstWhere((d) => d.id == dream.id);
+                  return PlatformIconButton(
+                    onPressed: () {
+                      toggleDreamFavorites(
+                          context: context, dream: currentDream);
+                    },
+                    icon: Icon(
+                      currentDream.isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_border_outlined,
+                    ),
+                  );
+                },
               ),
             ],
             snap: true,

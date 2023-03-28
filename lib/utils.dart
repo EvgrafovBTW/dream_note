@@ -77,6 +77,25 @@ deleteDream({
   );
 }
 
+toggleDreamFavorites({
+  required BuildContext context,
+  required Dream dream,
+}) {
+  String dreamName = '';
+  if (dream.title != null) {
+    dreamName = '"${dream.title!}"';
+  } else {
+    dreamName = 'от ${getDateString(dream.dreamDate.toIso8601String())}';
+  }
+  BlocProvider.of<DreamsBloc>(context)
+      .add(DreamToggleFavorite(!dream.isFavorite, dream));
+  if (dream.isFavorite) {
+    showSimpleNotification(Text('сон $dreamName удалён из избранного'));
+  } else {
+    showSimpleNotification(Text('сон $dreamName добавлен в избранное'));
+  }
+}
+
 platformNavigateTo({
   required BuildContext context,
   required Widget screen,

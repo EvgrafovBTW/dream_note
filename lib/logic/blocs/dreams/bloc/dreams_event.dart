@@ -16,3 +16,9 @@ class DreamRemove extends DreamsEvent {
   final Dream dream;
   const DreamRemove(this.dream);
 }
+
+class DreamToggleFavorite extends DreamsEvent {
+  final bool isFavorite;
+  final Dream dream;
+  const DreamToggleFavorite(this.isFavorite, this.dream);
+}

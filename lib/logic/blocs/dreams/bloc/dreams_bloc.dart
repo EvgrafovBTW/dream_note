@@ -27,6 +27,18 @@ class DreamsBloc extends HydratedBloc<DreamsEvent, DreamsState> {
         ),
       );
     });
+
+    on<DreamToggleFavorite>((event, emit) {
+      Dream favDream = event.dream.copyWith(isFavorite: event.isFavorite);
+      List<Dream> newDreams = List.from(state.dreams);
+      newDreams =
+          newDreams.map((d) => d.id == event.dream.id ? favDream : d).toList();
+      emit(
+        state.copyWith(
+          dreams: newDreams,
+        ),
+      );
+    });
   }
 
   @override
