@@ -1,20 +1,22 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
+import 'package:dream_note/logic/blocs/user/bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 class UserCredentialsScreen extends StatelessWidget {
   const UserCredentialsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameController = TextEditingController();
-    TextEditingController lastNameController = TextEditingController();
+    UserBloc userBloc = BlocProvider.of<UserBloc>(context);
+    TextEditingController nameController =
+        TextEditingController(text: userBloc.state.user?.name);
+    TextEditingController lastNameController =
+        TextEditingController(text: userBloc.state.user?.lastName);
     return Scaffold(
+      appBar: DreamAppBar(),
       body: SizedBox.expand(
         child: SafeArea(
           child: Padding(
@@ -36,8 +38,37 @@ class UserCredentialsScreen extends StatelessWidget {
                   ),
                 ),
                 PlatformElevatedButton(
-                  onPressed: () {},
-                  child: Text('Сохранить'),
+                  onPressed: () {
+                    if (nameController.text.isNotEmpty) {
+                      if (userBloc.state.user == null) {
+                        userBloc.add(
+                          InitUser(
+                            id: 'id',
+                            name: nameController.text,
+                            lastName: lastNameController.text,
+                            email: 'email',
+                            gender: 'gender',
+                            phone: 'phone',
+                            createdDate: 'createdDate',
+                          ),
+                        );
+                      } else {
+                        userBloc.add(
+                          UpdateUserData(
+                            userBloc.state.user!.copyWith(
+                              name: nameController.text,
+                              lastName: lastNameController.text,
+                            ),
+                          ),
+                        );
+                        showSimpleNotification(const Text('Профиль обновлён'));
+                        Navigator.pop(context);
+                      }
+                    } else {
+                      showSimpleNotification(const Text('Заполните имя'));
+                    }
+                  },
+                  child: const Text('Сохранить'),
                 )
               ],
             ),
@@ -46,6 +77,28 @@ class UserCredentialsScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class DreamAppBar extends PlatformAppBar implements PreferredSizeWidget {
+  DreamAppBar({
+    super.key,
+    super.cupertino,
+    super.automaticallyImplyLeading,
+    super.backgroundColor,
+    super.leading,
+    super.material,
+    super.title,
+    super.trailingActions,
+    super.widgetKey,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return PlatformAppBar();
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
 
 class DreamTextField extends StatelessWidget {
@@ -84,7 +137,7 @@ class DreamTextField extends StatelessWidget {
                   .state
                   .onPrimaryColor,
             ),
-            borderRadius: BorderRadius.all(
+            borderRadius: const BorderRadius.all(
               Radius.circular(15),
             ),
           ),

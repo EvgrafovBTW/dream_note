@@ -10,6 +10,8 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import 'package:dream_note/screens/consecutive_screens/settings_screen.dart';
 
+import '../logic/blocs/user/bloc/user_bloc.dart';
+
 class UserProfile extends StatelessWidget {
   const UserProfile({super.key});
 
@@ -28,44 +30,7 @@ class UserProfile extends StatelessWidget {
                 children: [
                   Flexible(
                     flex: 2,
-                    child: GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        platformPageRoute(
-                          material: (context, platform) =>
-                              MaterialPageRouteData(),
-                          cupertino: (context, platform) =>
-                              CupertinoPageRouteData(),
-                          context: context,
-                          builder: (context) => const SettingsScreen(),
-                        ),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              child: CircleAvatar(
-                                radius: sHeight / 15,
-                                child: Text(
-                                  'getUserAbName()',
-                                  style: TextStyle(fontSize: sHeight * 0.04),
-                                ),
-                              ),
-                            ),
-                            Text(
-                              'getUserName()',
-                              style: TextStyle(fontSize: sHeight * 0.04),
-                              overflow: TextOverflow.clip,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    /*
-                    BlocBuilder<UserBloc, UserState>(
+                    child: BlocBuilder<UserBloc, UserState>(
                       builder: (context, state) {
                         String getUserName() {
                           String name = '';
@@ -75,7 +40,7 @@ class UserProfile extends StatelessWidget {
                               name = '$name ${state.user!.lastName}';
                             }
                           } else {
-                            name = 'Пока только настройки';
+                            name = 'Неизвестный пользователь';
                           }
                           return name;
                         }
@@ -85,7 +50,7 @@ class UserProfile extends StatelessWidget {
                           if (state.user != null) {
                             abName = state.user!.name[0];
                             if (state.user!.lastName != null) {
-                              abName = '$abName ${state.user!.lastName![0]}';
+                              abName = '$abName${state.user!.lastName![0]}';
                             }
                           } else {
                             abName = '?';
@@ -133,7 +98,6 @@ class UserProfile extends StatelessWidget {
                         );
                       },
                     ),
-                  */
                   ),
                   Flexible(
                     flex: 2,
