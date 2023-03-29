@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:math';
 
+import 'package:dream_note/logic/blocs/app_data/bloc/app_data_bloc.dart';
 import 'package:dream_note/logic/blocs/app_load/bloc/app_load_bloc.dart';
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/logic/blocs/bottom_navigation/bloc/bottom_navigation_bloc.dart';
@@ -11,6 +14,7 @@ import 'package:dream_note/screens/profile_screen.dart';
 import 'package:dream_note/utils.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +46,9 @@ void main() async {
         BlocProvider(
           create: (context) => UserBloc(),
         ),
+        BlocProvider(
+          create: (context) => AppDataBloc(),
+        ),
       ],
       child: const MainApp(),
     ),
@@ -54,7 +61,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppLoadBloc appLoadBloc = BlocProvider.of<AppLoadBloc>(context);
-    DreamsBloc dreamsBloc = BlocProvider.of<DreamsBloc>(context);
+    AppDataBloc appDataBloc = BlocProvider.of<AppDataBloc>(context);
     BottomNavigationBloc bottomNavigationBloc =
         BlocProvider.of<BottomNavigationBloc>(context);
     AppSettingsBloc appSettingsBloc = BlocProvider.of<AppSettingsBloc>(context);
@@ -70,6 +77,10 @@ class MainApp extends StatelessWidget {
     Future<void> loadAppData() async {
       // print('loading app start');
       appLoadBloc.add(AppLoadStart());
+      PackageInfo info = await PackageInfo.fromPlatform();
+      bool needInfo = info.version != appDataBloc.state.appVersion;
+
+      appDataBloc.add(UpdateAppVersion(info.version, needInfo));
 
       await Future.delayed(const Duration(seconds: 2));
 

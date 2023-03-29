@@ -1,3 +1,4 @@
+import 'package:dream_note/logic/blocs/app_data/bloc/app_data_bloc.dart';
 import 'package:dream_note/logic/blocs/bottom_navigation/bloc/bottom_navigation_bloc.dart';
 import 'package:dream_note/screens/components/dream_card.dart';
 import 'package:dream_note/utils.dart';
@@ -13,6 +14,10 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppDataBloc appDataBloc = BlocProvider.of<AppDataBloc>(context);
+    if (appDataBloc.state.needInfo) {
+      appDataBloc.add(EmitInfoScreen(context));
+    }
     return SizedBox.expand(
       child: BlocBuilder<DreamsBloc, DreamsState>(
         builder: (context, state) {
