@@ -12,6 +12,8 @@ import 'package:dream_note/screens/main_screen.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/screens/profile_screen.dart';
 import 'package:dream_note/utils.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -21,9 +23,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:dream_note/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging _messaging = FirebaseMessaging.instance;
+
   HydratedBloc.storage = await HydratedStorage.build(
     storageDirectory: await getTemporaryDirectory(),
   );

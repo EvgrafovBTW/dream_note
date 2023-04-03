@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "300773761826",
+    "project_id": "dream-note-fba4c",
+    "storage_bucket": "dream-note-fba4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300773761826:android:3a9cc487e03fab7ce1fb7b",
+        "android_client_info": {
+          "package_name": "com.bleed.dreamnote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "300773761826-nr0th3rdfnthtj2ovee4ppf7cn391cs7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bleed.dreamnote",
+            "certificate_hash": "3a191ec5f71425baa153ca475cc14d4b861346d3"
+          }
+        },
+        {
+          "client_id": "300773761826-7t587se2gr6ns52nd0jp416lsfmj033i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9ABbYVrltEM4lLLz5cFGaM-I3mmOPxJs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "300773761826-7t587se2gr6ns52nd0jp416lsfmj033i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
