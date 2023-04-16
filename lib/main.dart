@@ -25,6 +25,8 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:dream_note/firebase_options.dart';
 
+import 'logic/blocs/main_screen/bloc/main_screen_mode_bloc.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -97,7 +99,10 @@ class MainApp extends StatelessWidget {
     return BlocBuilder<AppSettingsBloc, AppSettingsState>(
       builder: (context, settingsState) {
         List<Widget> pages = [
-          const MainScreen(),
+          BlocProvider(
+            create: (context) => MainScreenModeBloc(),
+            child: const MainScreen(),
+          ),
           const NewDreamScreen(),
           Placeholder(color: settingsState.primaryColor),
           const UserProfile(),
