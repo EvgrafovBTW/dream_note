@@ -127,7 +127,7 @@ class MainApp extends StatelessWidget {
                     background: Colors.white,
                     onBackground: Colors.white,
                     surface: settingsState.primaryColor,
-                    onSurface: Colors.white,
+                    onSurface: settingsState.onPrimaryColor,
                   ),
                 ),
               ),
@@ -157,11 +157,11 @@ class MainApp extends StatelessWidget {
                       BottomNavigationState>(
                     builder: (context, state) {
                       return Scaffold(
-                        floatingActionButton: FloatingActionButton(
-                          heroTag: 'floatingActionButton',
-                          onPressed: () => appSettingsBloc.add(ToggleDarkMode(
-                              !appSettingsBloc.state.isDarkMode)),
-                        ),
+                        // floatingActionButton: FloatingActionButton(
+                        //   heroTag: 'floatingActionButton',
+                        //   onPressed: () => appSettingsBloc.add(ToggleDarkMode(
+                        //       !appSettingsBloc.state.isDarkMode)),
+                        // ),
 
                         // backgroundColor: Colors.indigoAccent,
                         body: SizedBox.expand(
