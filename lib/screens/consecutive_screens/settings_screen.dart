@@ -18,6 +18,7 @@ class SettingsScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: settingLabelStyle.color,
             leading: const BackButton(
               color: Colors.white,
             ),

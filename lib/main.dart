@@ -14,6 +14,7 @@ import 'package:dream_note/screens/profile_screen.dart';
 import 'package:dream_note/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -113,12 +114,19 @@ class MainApp extends StatelessWidget {
             child: PlatformApp(
               material: (context, platform) => MaterialAppData(
                 theme: ThemeData(
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: settingsState.primaryColor,
+                    foregroundColor: settingsState.onPrimaryColor,
+                    systemOverlayStyle: SystemUiOverlayStyle(
+                      statusBarColor: settingsState.primaryColor,
+                    )
+                  ),
                   iconTheme: IconThemeData(
                     color: settingsState.onPrimaryColor,
                   ),
                   primaryColorDark: settingsState.primaryColor,
                   primaryColorLight: settingsState.primaryColor,
-                  useMaterial3: false,
+                  useMaterial3: true,
                   colorScheme: ColorScheme(
                     brightness: settingsState.isDarkMode
                         ? Brightness.dark
@@ -127,12 +135,20 @@ class MainApp extends StatelessWidget {
                     onPrimary: Colors.white,
                     secondary: settingsState.primaryColor,
                     onSecondary: Colors.white,
+                    tertiary: settingsState.primaryColor,
+                    onTertiary: Colors.white,
                     error: Colors.red,
                     onError: Colors.white,
-                    background: Colors.white,
-                    onBackground: Colors.white,
-                    surface: settingsState.primaryColor,
-                    onSurface: settingsState.onPrimaryColor,
+                    background: settingsState.isDarkMode
+                        ? Color(0xFF222222)
+                        : Colors.white,
+                    onBackground: Colors.grey,
+                    surface: settingsState.isDarkMode
+                        ? Color(0xFF111111)
+                        : Colors.white,
+                    onSurface: settingsState.isDarkMode
+                        ? Colors.white70
+                        : Colors.black,
                   ),
                 ),
               ),
