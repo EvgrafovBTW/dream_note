@@ -26,7 +26,7 @@ class MainScreen extends StatelessWidget {
     }
 
     return Scaffold(
-      /*floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         heroTag: 'floatingActionButtonMainScreen',
         onPressed: () {
           pageController.animateToPage(
@@ -43,7 +43,7 @@ class MainScreen extends StatelessWidget {
             return const Icon(Icons.feed_outlined);
           },
         ),
-      ),*/
+      ),
       body: SizedBox.expand(
         child: BlocBuilder<DreamsBloc, DreamsState>(
           builder: (context, state) {
