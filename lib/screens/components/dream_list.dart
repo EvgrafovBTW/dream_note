@@ -23,46 +23,42 @@ class DreamList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        for (Dream d in dreamList)
-          GestureDetector(
+    return ListView.builder(
+        itemCount: dreamList.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
               onTap: () => Navigator.push(
                   context,
                   platformPageRoute(
                     material: (context, platform) => MaterialPageRouteData(),
                     cupertino: (context, platform) => CupertinoPageRouteData(),
                     context: context,
-                    builder: (context) => DreamScreen(d),
-                  )
-              ),
+                    builder: (context) => DreamScreen(dreamList[index]),
+                  )),
               child: Card(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Center(
-                          child: Text(
-                            getCardTitle(d),
-                            style: const TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Center(
+                      child: Text(
+                        getCardTitle(dreamList[index]),
+                        style: const TextStyle(
+                          fontSize: 20,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Text(
-                          d.dreamContent,
-                          maxLines: maxLines,
-                        ),
-                      ),
-                    ],
-                  )
-              )
-          )
-      ],
-    );
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      '${dreamList[index].dreamContent}\n\n\n\n\n\n\n\n',
+                      maxLines: maxLines,
+                    ),
+                  ),
+                ],
+              )));
+        });
   }
 }

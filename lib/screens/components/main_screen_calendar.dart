@@ -74,8 +74,8 @@ class _MainScreenCalendarState extends State<MainScreenCalendar> {
             CalendarFormat.month: 'Month',
           },
         ),
-        Flexible(
-          child: DreamList(dreamList : _getDreamsForDay(_selectedDay), maxLines: 2,),
+        Expanded(
+          child: DreamList(dreamList : _getDreamsForDay(_selectedDay), maxLines: 10,),
         )
       ],
     );
