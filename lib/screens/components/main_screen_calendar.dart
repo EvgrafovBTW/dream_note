@@ -1,10 +1,9 @@
 import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
 import 'package:dream_note/models/dream_model.dart';
+import 'package:dream_note/screens/components/dream_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
-
-import 'dream_card.dart';
 
 class MainScreenCalendar extends StatefulWidget {
   const MainScreenCalendar({
@@ -16,19 +15,8 @@ class MainScreenCalendar extends StatefulWidget {
 }
 
 class _MainScreenCalendarState extends State<MainScreenCalendar> {
-  late DreamsBloc dreamsBloc;
-  List<Dream> dreamList = [];
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
-  late Widget listView;
-
-  @override
-  void initState() {
-    super.initState();
-    DreamsBloc dreamsBloc = BlocProvider.of<DreamsBloc>(context);
-    dreamList = dreamsBloc.state.dreams;
-    listView = _getCardDreamsForDay(_selectedDay);
-  }
 
   bool _compareDate(DateTime fromDream, DateTime fromCalendar) {
     return fromDream
@@ -45,22 +33,10 @@ class _MainScreenCalendarState extends State<MainScreenCalendar> {
         0;
   }
 
-  Widget _getCardDreamsForDay(DateTime day) {
-    List<Widget> dreamCards = [];
-    for (Dream d in _getDreamsForDay(_selectedDay)) {
-      dreamCards.add(DreamCard(d));
-    }
-    listView = ListView.builder(
-        itemCount: dreamCards.length,
-        itemBuilder: (context, index) {
-          return dreamCards[index];
-        });
-    return listView;
-  }
-
   List<Dream> _getDreamsForDay(DateTime day) {
+    DreamsBloc dreamsBloc = BlocProvider.of<DreamsBloc>(context);
     List<Dream> dreamsAtDayList = [];
-    for (Dream d in dreamList) {
+    for (Dream d in dreamsBloc.state.dreams) {
       if (_compareDate(d.dreamDate, day)) {
         dreamsAtDayList.add(d);
       }
@@ -83,7 +59,6 @@ class _MainScreenCalendarState extends State<MainScreenCalendar> {
             setState(() {
               _selectedDay = selectedDay;
               _focusedDay = focusedDay;
-              listView = _getCardDreamsForDay(_selectedDay);
             });
           },
           onFormatChanged: (format) {
@@ -100,7 +75,7 @@ class _MainScreenCalendarState extends State<MainScreenCalendar> {
           },
         ),
         Flexible(
-          child: _getCardDreamsForDay(_selectedDay),
+          child: DreamList(dreamList : _getDreamsForDay(_selectedDay), maxLines: 2,),
         )
       ],
     );
