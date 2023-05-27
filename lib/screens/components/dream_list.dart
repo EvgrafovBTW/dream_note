@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
 import '../../models/dream_model.dart';
 import '../../utils.dart';
@@ -27,16 +26,9 @@ class DreamList extends StatelessWidget {
         itemCount: dreamList.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-              onTap: () => Navigator.push(
-                  context,
-                  platformPageRoute(
-                    material: (context, platform) => MaterialPageRouteData(),
-                    cupertino: (context, platform) => CupertinoPageRouteData(),
-                    context: context,
-                    builder: (context) => DreamScreen(dreamList[index]),
-                  )),
-              child: Card(
-                  child: Column(
+            onTap: () => platformNavigateTo(context: context, screen: DreamScreen(dreamList[index])),
+            child: Card(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(

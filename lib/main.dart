@@ -26,6 +26,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:dream_note/firebase_options.dart';
 
+import 'logic/api/content_test_api_impl/content_test_api_impl.dart';
 import 'logic/blocs/main_screen/bloc/main_screen_mode_bloc.dart';
 
 void main() async {
@@ -92,6 +93,10 @@ class MainApp extends StatelessWidget {
       appDataBloc.add(UpdateAppVersion(info.version, needInfo));
 
       await Future.delayed(const Duration(seconds: 2));
+
+      PostApiImpl postApiImpl = PostApiImpl();
+      dynamic someThing = postApiImpl.getPosts('');
+      print(someThing.toString());
 
       appLoadBloc.add(AppLoadComplete());
       // print('loading app complete');
