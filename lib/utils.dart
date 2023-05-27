@@ -99,12 +99,15 @@ toggleDreamFavorites({
 platformNavigateTo({
   required BuildContext context,
   required Widget screen,
+  MaterialPageRouteData? materialData,
+  CupertinoPageRouteData? cupertinoData,
 }) {
   Navigator.push(
     context,
     platformPageRoute(
-      material: (context, platform) => MaterialPageRouteData(),
-      cupertino: (context, platform) => CupertinoPageRouteData(),
+      material: (context, platform) => materialData ?? MaterialPageRouteData(),
+      cupertino: (context, platform) =>
+          cupertinoData ?? CupertinoPageRouteData(),
       context: context,
       builder: (context) => screen,
     ),
