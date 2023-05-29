@@ -7,7 +7,10 @@ import 'package:dream_note/logic/blocs/app_load/bloc/app_load_bloc.dart';
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/logic/blocs/bottom_navigation/bloc/bottom_navigation_bloc.dart';
 import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
+import 'package:dream_note/logic/blocs/feed/bloc/feed_bloc.dart';
 import 'package:dream_note/logic/blocs/user/bloc/user_bloc.dart';
+import 'package:dream_note/models/post_model.dart';
+import 'package:dream_note/screens/feed_screen.dart';
 import 'package:dream_note/screens/main_screen.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/screens/profile_screen.dart';
@@ -59,6 +62,9 @@ void main() async {
         BlocProvider(
           create: (context) => AppDataBloc(),
         ),
+        BlocProvider(
+          create: (context) => FeedBloc(),
+        ),
       ],
       child: const MainApp(),
     ),
@@ -75,6 +81,7 @@ class MainApp extends StatelessWidget {
     BottomNavigationBloc bottomNavigationBloc =
         BlocProvider.of<BottomNavigationBloc>(context);
     AppSettingsBloc appSettingsBloc = BlocProvider.of<AppSettingsBloc>(context);
+    FeedBloc feedBloc = BlocProvider.of<FeedBloc>(context);
 
     onPageTapped(int index) {
       if (index != 2) {
@@ -91,12 +98,12 @@ class MainApp extends StatelessWidget {
       bool needInfo = info.version != appDataBloc.state.appVersion;
 
       appDataBloc.add(UpdateAppVersion(info.version, needInfo));
-
       await Future.delayed(const Duration(seconds: 2));
 
       PostApiImpl postApiImpl = PostApiImpl();
-      dynamic someThing = postApiImpl.getPosts('');
-      print(someThing.toString());
+      List<Post> someThing = (await postApiImpl.getPosts('')) as List<Post>;
+      feedBloc.add(FeedLoad(someThing));
+      // print(someThing.toString());
 
       appLoadBloc.add(AppLoadComplete());
       // print('loading app complete');
@@ -111,6 +118,7 @@ class MainApp extends StatelessWidget {
           ),
           const NewDreamScreen(),
           Placeholder(color: settingsState.primaryColor),
+          const FeedScreen(),
           const UserProfile(),
         ];
 
@@ -221,13 +229,12 @@ class MainApp extends StatelessWidget {
                               ),
                               label: 'Поиск',
                             ),
-
-                            // BottomNavigationBarItem(
-                            //   icon: Icon(
-                            //     Icons.book_outlined,
-                            //   ),
-                            //   label: 'Лента',
-                            // ),
+                            BottomNavigationBarItem(
+                              icon: Icon(
+                                Icons.storage_rounded,
+                              ),
+                              label: 'Лента',
+                            ),
                             BottomNavigationBarItem(
                               icon: Icon(
                                 Icons.person_2_outlined,

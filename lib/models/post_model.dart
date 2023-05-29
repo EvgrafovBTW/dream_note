@@ -4,13 +4,13 @@ class Post {
   int id;
   String postTitle;
   String postContent;
-  DateTime postTime;
+  // DateTime postTime;
 
   Post({
     required this.id,
     required this.postTitle,
     required this.postContent,
-    required this.postTime,
+    // required this.postTime,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,7 +18,7 @@ class Post {
       'id': id,
       'postTitle': postTitle,
       'postContent': postContent,
-      'postTime': postTime,
+      // 'postTime': postTime,
     };
   }
 
@@ -27,7 +27,7 @@ class Post {
       id: map['id'] as int,
       postTitle: map['postTitle'] as String,
       postContent: map['postContent'] as String,
-      postTime: DateTime.fromMillisecondsSinceEpoch(map['postTime'] as int),
+      // postTime: DateTime.fromMillisecondsSinceEpoch(map['postTime'] as int),
     );
   }
 
@@ -40,13 +40,13 @@ class Post {
     int? id,
     String? postContent,
     String? postTitle,
-    DateTime? postTime,
+    // DateTime? postTime,
   }) {
     return Post(
       id: id ?? this.id,
       postTitle: postTitle ?? this.postTitle,
       postContent: postContent ?? this.postContent,
-      postTime: postTime ?? this.postTime,
+      // postTime: postTime ?? this.postTime,
     );
   }
 }
