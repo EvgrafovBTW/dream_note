@@ -4,12 +4,14 @@ class Post {
   int id;
   String postTitle;
   String postContent;
+  String imageURL;
   // DateTime postTime;
 
   Post({
     required this.id,
     required this.postTitle,
     required this.postContent,
+    required this.imageURL,
     // required this.postTime,
   });
 
@@ -18,6 +20,7 @@ class Post {
       'id': id,
       'postTitle': postTitle,
       'postContent': postContent,
+      'imageURL': imageURL,
       // 'postTime': postTime,
     };
   }
@@ -27,6 +30,7 @@ class Post {
       id: map['id'] as int,
       postTitle: map['postTitle'] as String,
       postContent: map['postContent'] as String,
+      imageURL: map['imageURL'] as String,
       // postTime: DateTime.fromMillisecondsSinceEpoch(map['postTime'] as int),
     );
   }
@@ -40,12 +44,14 @@ class Post {
     int? id,
     String? postContent,
     String? postTitle,
+    String? imageURL,
     // DateTime? postTime,
   }) {
     return Post(
       id: id ?? this.id,
       postTitle: postTitle ?? this.postTitle,
       postContent: postContent ?? this.postContent,
+      imageURL: imageURL ?? this.imageURL,
       // postTime: postTime ?? this.postTime,
     );
   }
