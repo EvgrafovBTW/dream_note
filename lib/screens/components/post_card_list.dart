@@ -19,25 +19,27 @@ class _PostCardListState extends State<PostCardList> {
   // List<Post> listPost;
 
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   void _onRefresh() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
+    BlocProvider.of<FeedBloc>(context).add(FeedLoad());
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
+
   void _onLoading() async {
     // monitor network fetch
     await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use loadFailed(),if no data return,use LoadNodata()
-    if (mounted)
-      setState(() {
-        BlocProvider.of<FeedBloc>(context).add(FeedLoad());
-      });
+    if (mounted) {
+      // setState(() {
+      // BlocProvider.of<FeedBloc>(context).add(FeedLoad());
+      // });
+    }
     _refreshController.loadComplete();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,28 +49,23 @@ class _PostCardListState extends State<PostCardList> {
       ),
       body: Scrollbar(
         child: SmartRefresher(
-          enablePullDown: true,
-          header: WaterDropMaterialHeader(),
-          controller: _refreshController,
-          onRefresh: _onRefresh,
-          onLoading: _onLoading,
-          child: ListView.builder(
-              itemCount: widget.postList.length,
-              itemBuilder: (context, index) {
-                return PostCard(post: widget.postList[index]);
-              }
-          ),
-        ),
+            enablePullDown: true,
+            // header: WaterDropMaterialHeader(),
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            onLoading: _onLoading,
+            child: SingleChildScrollView(
+              child: BlocBuilder<FeedBloc, FeedState>(
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      for (Post post in state.posts) PostCard(post: post)
+                    ],
+                  );
+                },
+              ),
+            )),
       ),
     );
-
-
-
-    // return ListView.builder(
-    //     itemCount: widget.postList.length,
-    //     itemBuilder: (context, index) {
-    //       return PostCard(post: widget.postList[index]);
-    //     }
-    // );
   }
 }
