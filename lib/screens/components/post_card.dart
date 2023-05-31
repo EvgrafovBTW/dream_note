@@ -7,7 +7,6 @@ class PostCard extends StatelessWidget {
 
   final Post post;
 
-
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -15,9 +14,19 @@ class PostCard extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          Padding(padding: const EdgeInsets.all(8), child: Text(post.postTitle, style: const TextStyle(fontSize: 20),),),
-          Padding(padding: const EdgeInsets.all(8), child: Text(post.postContent),),
-          Padding(padding: const EdgeInsets.all(8),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              post.postTitle,
+              style: const TextStyle(fontSize: 20),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(post.postContent),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 maxWidth: screenWidth,

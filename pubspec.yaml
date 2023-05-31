@@ -27,7 +27,7 @@ dependencies:
   path_provider: ^2.0.14
   simple_animations: ^5.0.0+3
   table_calendar: ^3.0.9
-  pull_to_refresh: ^2.0.0
+  liquid_pull_to_refresh: ^3.0.1
 
 dev_dependencies:
   flutter_test:

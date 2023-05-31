@@ -14,7 +14,7 @@ class FeedBloc extends HydratedBloc<FeedEvent, FeedState> {
     on<FeedLoad>((event, emit) async {
       PostApiImpl postApiImpl = PostApiImpl();
       List<Post> loadPosts = (await postApiImpl.getPosts('')) as List<Post>;
-      loadPosts.insertAll(0, state.posts);
+      // loadPosts.insertAll(0, state.posts); // если нужно проверить обновление - раскоментить
       emit(state.copyWith(posts: loadPosts));
     });
   }
