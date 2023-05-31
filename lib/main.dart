@@ -10,7 +10,7 @@ import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
 import 'package:dream_note/logic/blocs/feed/bloc/feed_bloc.dart';
 import 'package:dream_note/logic/blocs/user/bloc/user_bloc.dart';
 import 'package:dream_note/models/post_model.dart';
-import 'package:dream_note/screens/feed_screen.dart';
+import 'package:dream_note/screens/consecutive_screens/feed_screen.dart';
 import 'package:dream_note/screens/main_screen.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/screens/profile_screen.dart';
@@ -99,10 +99,7 @@ class MainApp extends StatelessWidget {
 
       appDataBloc.add(UpdateAppVersion(info.version, needInfo));
       await Future.delayed(const Duration(seconds: 2));
-
-      PostApiImpl postApiImpl = PostApiImpl();
-      List<Post> someThing = (await postApiImpl.getPosts('')) as List<Post>;
-      feedBloc.add(FeedLoad(someThing));
+      feedBloc.add(FeedLoad());
       // print(someThing.toString());
 
       appLoadBloc.add(AppLoadComplete());
@@ -118,7 +115,7 @@ class MainApp extends StatelessWidget {
           ),
           const NewDreamScreen(),
           Placeholder(color: settingsState.primaryColor),
-          const FeedScreen(),
+          FeedScreen(),
           const UserProfile(),
         ];
 

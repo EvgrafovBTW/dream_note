@@ -8,6 +8,4 @@ abstract class FeedEvent extends Equatable {
 }
 
 class FeedLoad extends FeedEvent {
-  final List<Post> posts;
-  const FeedLoad(this.posts);
 }

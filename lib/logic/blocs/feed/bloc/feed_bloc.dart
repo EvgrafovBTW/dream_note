@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dream_note/logic/api/content_test_api_impl/content_test_api_impl.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:dream_note/models/post_model.dart';
@@ -11,7 +12,8 @@ part 'feed_state.dart';
 class FeedBloc extends HydratedBloc<FeedEvent, FeedState> {
   FeedBloc() : super(FeedsInitial()) {
     on<FeedLoad>((event, emit) async {
-      List<Post> loadPosts = event.posts;
+      PostApiImpl postApiImpl = PostApiImpl();
+      List<Post> loadPosts = (await postApiImpl.getPosts('')) as List<Post>;
       emit(
           state.copyWith(posts: loadPosts)
       );

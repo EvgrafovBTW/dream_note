@@ -10,14 +10,14 @@ class FeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: SizedBox.expand(
-          child: BlocBuilder<FeedBloc, FeedState>(
-            builder: (context, state) {
-              if (state.posts.isEmpty) {
-                return Text('Постов нема');
-              }
-              return PostCardList(postList: state.posts);
-            },
-          ),
+        child: BlocBuilder<FeedBloc, FeedState>(
+          builder: (context, state) {
+            if (state.posts.isEmpty) {
+              return Text('Постов нема');
+            }
+            return PostCardList(postList: state.posts);
+          },
+        ),
       ),
     );
   }
