@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+/// Модель описывающая пост
 class Post {
   int id;
   String postTitle;
@@ -15,6 +16,7 @@ class Post {
     // required this.postTime,
   });
 
+  /// Методы ниже обеспечивают конвертацию из/в JSON формат
   Map<String, dynamic> toMap() {
     return <String, dynamic> {
       'id': id,

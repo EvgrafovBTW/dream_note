@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
+/// Класс с экраном постов
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key? key}) : super(key: key);
 
@@ -15,8 +16,11 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+
+  /// Событие которое срабатывает при обновлении
   Future<void> _handleRefresh() async {
     setState(() {
+      //TODO: обнаружен недочет что он срабатывает и при открытии страницы два выхода: при инициализации экрана не вызывать/убрать загрузку при инициализации приложения
       BlocProvider.of<FeedBloc>(context).add(FeedLoad());
     });
   }

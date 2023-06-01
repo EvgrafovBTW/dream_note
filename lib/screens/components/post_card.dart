@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:dream_note/models/post_model.dart';
 
+/// Класс который возвращает картоку поста
 class PostCard extends StatelessWidget {
   const PostCard({super.key, required this.post});
 

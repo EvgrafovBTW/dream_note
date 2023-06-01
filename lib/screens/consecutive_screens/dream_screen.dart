@@ -2,15 +2,12 @@
 
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
+import 'package:dream_note/models/dream_model.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-
-import '../../models/dream_model.dart';
 
 class DreamScreen extends StatelessWidget {
   final Dream dream;

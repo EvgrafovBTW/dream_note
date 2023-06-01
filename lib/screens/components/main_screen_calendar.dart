@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+/// Класс с виджетом календаря
 class MainScreenCalendar extends StatefulWidget {
   const MainScreenCalendar({
     super.key,
@@ -44,6 +45,7 @@ class _MainScreenCalendarState extends State<MainScreenCalendar> {
     return dreamsAtDayList;
   }
 
+  //TODO: обнаружен недочет, что при добавлении нового сна, он не отображается на календаре (как точка под датой)
   @override
   Widget build(BuildContext context) {
     return Column(

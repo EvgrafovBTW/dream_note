@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dream_note/logic/api/common_api/common_api.dart';
 import 'package:flutter/material.dart';
 
+/// DAO для подключения к БД
 class CommonTestApiImpl extends CommonApi {
   Dio dio = Dio();
   static final CommonTestApiImpl _commonApi = CommonTestApiImpl._internal();

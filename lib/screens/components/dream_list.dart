@@ -1,15 +1,17 @@
+import 'package:dream_note/models/dream_model.dart';
+import 'package:dream_note/screens/consecutive_screens/dream_screen.dart';
+import 'package:dream_note/utils.dart';
 import 'package:flutter/material.dart';
 
-import '../../models/dream_model.dart';
-import '../../utils.dart';
-import '../consecutive_screens/dream_screen.dart';
 
+/// Класс который создает виджет со списком снов
 class DreamList extends StatelessWidget {
   const DreamList({super.key, required this.dreamList, required this.maxLines});
 
   final List<Dream> dreamList;
   final int maxLines;
 
+  /// Возвращает название сна, в случае если его нет, возвращает строку с датой
   String getCardTitle(Dream d) {
     String title = '';
     if (d.title != null) {

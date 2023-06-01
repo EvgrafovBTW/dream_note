@@ -136,6 +136,8 @@ class MainApp extends StatelessWidget {
                   ),
                   primaryColorDark: settingsState.primaryColor,
                   primaryColorLight: settingsState.primaryColor,
+                  /// Это вполне рабоча схема для UI3, который перешел с UI2
+                  /// TODO: разобратсья получше в UI3 и сделать нормальные цветовые палитры для темной и светлой темы
                   useMaterial3: true,
                   colorScheme: ColorScheme(
                     brightness: settingsState.isDarkMode
@@ -193,7 +195,6 @@ class MainApp extends StatelessWidget {
                         //   onPressed: () => appSettingsBloc.add(ToggleDarkMode(
                         //       !appSettingsBloc.state.isDarkMode)),
                         // ),
-
                         // backgroundColor: Colors.indigoAccent,
                         body: SizedBox.expand(
                           child: IndexedStack(

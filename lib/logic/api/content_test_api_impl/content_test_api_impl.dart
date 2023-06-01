@@ -1,11 +1,12 @@
 
 import 'package:dio/dio.dart';
+import 'package:dream_note/logic/api/common_test_api_impl/common_test_api_impl.dart';
 import 'package:dream_note/logic/api/content_api/content_api.dart';
 import 'package:dream_note/models/post_model.dart';
 
-import '../common_test_api_impl/common_test_api_impl.dart';
 
 
+/// DAO для работы с БД постов
 class PostApiImpl extends ContentApi{
   final CommonTestApiImpl api = CommonTestApiImpl();
 
@@ -16,7 +17,9 @@ class PostApiImpl extends ContentApi{
     return response;
   }
 
+  /// Выгружает все посты
   Future<dynamic> getPosts(String url) async {
+    // TODO: когда будет нормальное подключение оставить то что ниже
     // Response response = await api.get(url, options: Options());
 
     List<Post> posts = [
