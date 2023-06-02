@@ -7,13 +7,17 @@ import 'package:dream_note/logic/blocs/app_load/bloc/app_load_bloc.dart';
 import 'package:dream_note/logic/blocs/app_settings/bloc/app_settings_bloc.dart';
 import 'package:dream_note/logic/blocs/bottom_navigation/bloc/bottom_navigation_bloc.dart';
 import 'package:dream_note/logic/blocs/dreams/bloc/dreams_bloc.dart';
+import 'package:dream_note/logic/blocs/feed/bloc/feed_bloc.dart';
 import 'package:dream_note/logic/blocs/user/bloc/user_bloc.dart';
+import 'package:dream_note/models/post_model.dart';
+import 'package:dream_note/screens/consecutive_screens/feed_screen.dart';
 import 'package:dream_note/screens/main_screen.dart';
 import 'package:dream_note/screens/new_dream_screen.dart';
 import 'package:dream_note/screens/profile_screen.dart';
 import 'package:dream_note/utils.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -25,6 +29,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:dream_note/firebase_options.dart';
 
+import 'logic/api/content_test_api_impl/content_test_api_impl.dart';
 import 'logic/blocs/main_screen/bloc/main_screen_mode_bloc.dart';
 
 void main() async {
@@ -57,6 +62,9 @@ void main() async {
         BlocProvider(
           create: (context) => AppDataBloc(),
         ),
+        BlocProvider(
+          create: (context) => FeedBloc(),
+        ),
       ],
       child: const MainApp(),
     ),
@@ -73,6 +81,7 @@ class MainApp extends StatelessWidget {
     BottomNavigationBloc bottomNavigationBloc =
         BlocProvider.of<BottomNavigationBloc>(context);
     AppSettingsBloc appSettingsBloc = BlocProvider.of<AppSettingsBloc>(context);
+    FeedBloc feedBloc = BlocProvider.of<FeedBloc>(context);
 
     onPageTapped(int index) {
       if (index != 2) {
@@ -89,8 +98,9 @@ class MainApp extends StatelessWidget {
       bool needInfo = info.version != appDataBloc.state.appVersion;
 
       appDataBloc.add(UpdateAppVersion(info.version, needInfo));
-
       await Future.delayed(const Duration(seconds: 2));
+      feedBloc.add(FeedLoad());
+      // print(someThing.toString());
 
       appLoadBloc.add(AppLoadComplete());
       // print('loading app complete');
@@ -105,6 +115,7 @@ class MainApp extends StatelessWidget {
           ),
           const NewDreamScreen(),
           Placeholder(color: settingsState.primaryColor),
+          FeedScreen(),
           const UserProfile(),
         ];
 
@@ -113,12 +124,21 @@ class MainApp extends StatelessWidget {
             child: PlatformApp(
               material: (context, platform) => MaterialAppData(
                 theme: ThemeData(
+                  appBarTheme: AppBarTheme(
+                    backgroundColor: settingsState.primaryColor,
+                    foregroundColor: settingsState.onPrimaryColor,
+                    systemOverlayStyle: SystemUiOverlayStyle(
+                      statusBarColor: settingsState.primaryColor,
+                    )
+                  ),
                   iconTheme: IconThemeData(
                     color: settingsState.onPrimaryColor,
                   ),
                   primaryColorDark: settingsState.primaryColor,
                   primaryColorLight: settingsState.primaryColor,
-                  useMaterial3: false,
+                  /// Это вполне рабоча схема для UI3, который перешел с UI2
+                  /// TODO: разобратсья получше в UI3 и сделать нормальные цветовые палитры для темной и светлой темы
+                  useMaterial3: true,
                   colorScheme: ColorScheme(
                     brightness: settingsState.isDarkMode
                         ? Brightness.dark
@@ -127,12 +147,20 @@ class MainApp extends StatelessWidget {
                     onPrimary: Colors.white,
                     secondary: settingsState.primaryColor,
                     onSecondary: Colors.white,
+                    tertiary: settingsState.primaryColor,
+                    onTertiary: Colors.white,
                     error: Colors.red,
                     onError: Colors.white,
-                    background: Colors.white,
-                    onBackground: Colors.white,
-                    surface: settingsState.primaryColor,
-                    onSurface: settingsState.onPrimaryColor,
+                    background: settingsState.isDarkMode
+                        ? Color(0xFF222222)
+                        : Colors.white,
+                    onBackground: Colors.grey,
+                    surface: settingsState.isDarkMode
+                        ? Color(0xFF111111)
+                        : Colors.white,
+                    onSurface: settingsState.isDarkMode
+                        ? Colors.white70
+                        : Colors.black,
                   ),
                 ),
               ),
@@ -167,7 +195,6 @@ class MainApp extends StatelessWidget {
                         //   onPressed: () => appSettingsBloc.add(ToggleDarkMode(
                         //       !appSettingsBloc.state.isDarkMode)),
                         // ),
-
                         // backgroundColor: Colors.indigoAccent,
                         body: SizedBox.expand(
                           child: IndexedStack(
@@ -200,13 +227,12 @@ class MainApp extends StatelessWidget {
                               ),
                               label: 'Поиск',
                             ),
-
-                            // BottomNavigationBarItem(
-                            //   icon: Icon(
-                            //     Icons.book_outlined,
-                            //   ),
-                            //   label: 'Лента',
-                            // ),
+                            BottomNavigationBarItem(
+                              icon: Icon(
+                                Icons.storage_rounded,
+                              ),
+                              label: 'Лента',
+                            ),
                             BottomNavigationBarItem(
                               icon: Icon(
                                 Icons.person_2_outlined,

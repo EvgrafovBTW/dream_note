@@ -49,7 +49,7 @@ class NewDreamScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       child: NewDreamTitle(),
                     ),
                     ValueListenableBuilder(
